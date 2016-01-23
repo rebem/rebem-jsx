@@ -30,7 +30,7 @@
   "scripts": {
     "build": "babel src/index.js > index.js",
     "lint": "eslint ./src/index.js",
-    "tdd": "chokidar cases/**/*.js -c 'npm test' --initial",
+    "tdd": "chokidar ./**/*.js -c 'npm test' --initial",
     "test": "node cases/test.js"
   },
   "license": "MIT"
