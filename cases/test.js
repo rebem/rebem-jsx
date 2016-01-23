@@ -11,7 +11,8 @@ var pluginPath = require.resolve('../src');
 
 function runTest(path) {
     var output = babel.transformFileSync(path + '/input.js', {
-        plugins: ['transform-runtime', pluginPath]
+        presets: [ 'react' ],
+        plugins: [ 'transform-runtime', pluginPath ]
     });
 
     var expected = fs.readFileSync(path + '/output.js', 'utf-8');
