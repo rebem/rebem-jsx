@@ -18,6 +18,7 @@ export default function({ types: t }) {
                                 local: { type: 'Identifier', name: 'BEEP' }
                             }
                         ],
+                        source: { type: 'StringLiteral', value: 'rebem' },
                         ...
                     }
 
