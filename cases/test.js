@@ -1,54 +1,52 @@
-var assert = require('assert');
-var babel = require('babel-core');
-var chalk = require('chalk');
-var clear = require('clear');
-var diff = require('diff');
-var fs = require('fs');
+import path from 'path';
+// import assert from 'assert'; // TODO use actual assert?
+import chalk from 'chalk';
+import clear from 'clear';
+import fs from 'fs';
+import 'babel-register';
 
-require('babel-register');
+const babel = require('babel-core'); // TODO ES6 import returns undefined
+const diff = require('diff');        // TODO ES6 import returns undefined
+const pluginPath = require.resolve('../src');
 
-var pluginPath = require.resolve('../src');
+function normalizeLines(str) {
+    return str.trimRight().replace(/\r\n/g, '\n');
+}
 
-function runTest(path) {
-    var output = babel.transformFileSync(path + '/input.js', {
+function runTest(testPath) {
+    const output = babel.transformFileSync(testPath + '/input.js', {
         presets: [ 'react' ],
         plugins: [ 'transform-runtime', pluginPath ]
     });
-
-    var expected = fs.readFileSync(path + '/output.js', 'utf-8');
-
-    function normalizeLines(str) {
-        return str.trimRight().replace(/\r\n/g, '\n');
-    }
+    const expected = fs.readFileSync(testPath + '/output.js', 'utf-8');
 
     diff.diffLines(normalizeLines(output.code), normalizeLines(expected))
-    .forEach(function (part) {
-        var value = part.value;
-        if (part.added) {
-            value = chalk.green(part.value);
-        } else if (part.removed) {
-            value = chalk.red(part.value);
-        }
-        process.stdout.write(value);
-    });
+        .forEach(part => {
+            let value = part.value;
+
+            if (part.added) {
+                value = chalk.green(part.value);
+            } else if (part.removed) {
+                value = chalk.red(part.value);
+            }
+            process.stdout.write(value);
+        });
 
     console.log();
 }
 
 function runTests() {
-    fs.readdirSync(__dirname).map(function (path) {
-        return __dirname + '/' + path;
-    }).filter(function (path) {
-        return fs.lstatSync(path).isDirectory();
-    }).forEach(function(path) {
-        console.log(path);
-
-        runTest(path);
-    });
+    fs.readdirSync(__dirname)
+        .map(testPath => path.resolve(__dirname, testPath))
+        .filter(testPath => fs.lstatSync(testPath).isDirectory())
+        .forEach(testPath => {
+            console.log(testPath);
+            runTest(testPath);
+        });
 }
 
 if (process.argv.indexOf('--watch') >= 0) {
-    require('watch').watchTree(__dirname + '/../src', function () {
+    require('watch').watchTree(path.resolve(__dirname, '/../src'), function () {
         delete require.cache[pluginPath];
         clear();
         console.log('Press Ctrl+C to stop watching...');
