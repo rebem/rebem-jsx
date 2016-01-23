@@ -3,5 +3,7 @@
 var _rebem = require("rebem");
 
 function Test() {
-    return BEM({ block: "test" });
+    return (0, _rebem.BEM)({
+        block: 'test'
+    });
 }
