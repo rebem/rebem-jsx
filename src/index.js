@@ -71,20 +71,22 @@ export default function({ types: t }) {
                     BEM({ block: "test" })
                 */
 
-                const node = path.node;
+                if (BEM !== null) {
+                    const node = path.node;
 
-                if (
-                    t.isMemberExpression(node.callee) &&
-                    t.isIdentifier(node.callee.object, { name: 'React' }) &&
-                    t.isIdentifier(node.callee.property, { name: 'createElement' }) &&
-                    t.isIdentifier(node.arguments[0], { name: BEM })
-                ) {
-                    path.replaceWith(
-                        t.callExpression(
-                            t.identifier(BEM),
-                            node.arguments.slice(1)
-                        )
-                    );
+                    if (
+                        t.isMemberExpression(node.callee) &&
+                        t.isIdentifier(node.callee.object, { name: 'React' }) &&
+                        t.isIdentifier(node.callee.property, { name: 'createElement' }) &&
+                        t.isIdentifier(node.arguments[0], { name: BEM })
+                    ) {
+                        path.replaceWith(
+                            t.callExpression(
+                                t.identifier(BEM),
+                                node.arguments.slice(1)
+                            )
+                        );
+                    }
                 }
             }
         }
