@@ -25,13 +25,18 @@
     "eslint": "1.10.x",
     "babel-eslint": ">5.0.0-beta1",
     "eslint-plugin-babel": "3.0.x",
-    "eslint-config-rebem": "0.2.x"
+    "eslint-config-rebem": "0.2.x",
+
+    "husky": "0.10.x"
   },
   "scripts": {
     "build": "babel src/index.js > index.js",
+
     "lint": "eslint ./src/index.js",
     "tdd": "chokidar ./**/*.js -c 'npm test' --initial",
-    "test": "node cases/test.js"
+    "test": "./node_modules/.bin/babel-node cases/test.js",
+
+    "precommit": "npm run lint"
   },
   "license": "MIT"
 }
