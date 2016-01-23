@@ -73,21 +73,25 @@ export default function({ types: t }) {
                     BEM({ block: "test" })
                 */
 
+                // don't do anything if there is no rebem.BEM imported
                 if (BEM !== null) {
-                    const node = path.node;
+                    // don't do anything if there is a scoped var with the same name
+                    if (!path.scope.hasOwnBinding(BEM)) {
+                        const node = path.node;
 
-                    if (
-                        t.isMemberExpression(node.callee) &&
-                        t.isIdentifier(node.callee.object, { name: 'React' }) &&
-                        t.isIdentifier(node.callee.property, { name: 'createElement' }) &&
-                        t.isIdentifier(node.arguments[0], { name: BEM })
-                    ) {
-                        path.replaceWith(
-                            t.callExpression(
-                                t.identifier(BEM),
-                                node.arguments.slice(1)
-                            )
-                        );
+                        if (
+                            t.isMemberExpression(node.callee) &&
+                            t.isIdentifier(node.callee.object, { name: 'React' }) &&
+                            t.isIdentifier(node.callee.property, { name: 'createElement' }) &&
+                            t.isIdentifier(node.arguments[0], { name: BEM })
+                        ) {
+                            path.replaceWith(
+                                t.callExpression(
+                                    t.identifier(BEM),
+                                    node.arguments.slice(1)
+                                )
+                            );
+                        }
                     }
                 }
             }
