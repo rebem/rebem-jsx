@@ -3,93 +3,94 @@ export default function({ types: t }) {
         visitor: {
             Program: {
                 exit(globalPath) {
-                    const BEMNames = [];
+                    let isInserted = false;
 
                     globalPath.traverse({
-                        ImportDeclaration(path) {
-                            /*
-                                import { BEM as BEEP } from 'rebem';
+                        CallExpression(path) {
+                            if (
+                                t.isMemberExpression(path.node.callee) &&
+                                t.isIdentifier(path.node.callee.object, { name: 'React' }) &&
+                                t.isIdentifier(path.node.callee.property, { name: 'createElement' })
+                            ) {
+                                if (!isInserted) {
+                                    path.parentPath.insertBefore(
+                                        t.functionExpression(
+                                            t.identifier('checkBEM'),
+                                            [
+                                                t.identifier('element')
+                                            ],
+                                            t.blockStatement([
+                                                t.ifStatement(
+                                                    t.logicalExpression(
+                                                        '||',
+                                                        t.binaryExpression(
+                                                            '===',
+                                                            t.memberExpression(
+                                                                t.identifier('element'),
+                                                                t.identifier('name')
+                                                            ),
+                                                            t.stringLiteral('BEM')
+                                                        ),
+                                                        t.binaryExpression(
+                                                            '===',
+                                                            t.memberExpression(
+                                                                t.identifier('element'),
+                                                                t.identifier('name')
+                                                            ),
+                                                            t.stringLiteral('blockFactory')
+                                                        )
+                                                    ),
+                                                    t.blockStatement([
+                                                        t.returnStatement(
+                                                            t.callExpression(
+                                                                t.memberExpression(
+                                                                    t.identifier('element'),
+                                                                    t.identifier('apply')
+                                                                ),
+                                                                [
+                                                                    t.identifier('undefined'),
+                                                                    t.callExpression(
+                                                                        t.memberExpression(
+                                                                            t.identifier('arguments'),
+                                                                            t.identifier('slice')
+                                                                        ),
+                                                                        [
+                                                                            t.numericLiteral(1)
+                                                                        ]
+                                                                    )
+                                                                ]
+                                                            )
+                                                        )
+                                                    ])
+                                                ),
+                                                t.returnStatement(
+                                                    t.callExpression(
+                                                        t.memberExpression(
+                                                            t.memberExpression(
+                                                                t.identifier('React'),
+                                                                t.identifier('createElement')
+                                                            ),
+                                                            t.identifier('apply')
+                                                        ),
+                                                        [
+                                                            t.identifier('React'),
+                                                            t.identifier('arguments')
 
-                                ⬇︎
-
-                                {
-                                    type: 'ImportDeclaration',
-                                    specifiers: [
-                                        {
-                                            type: 'ImportSpecifier',
-                                            imported: { type: 'Identifier',  name: 'BEM' },
-                                            local: { type: 'Identifier', name: 'BEEP' }
-                                        }
-                                    ],
-                                    source: { type: 'StringLiteral', value: 'rebem' },
-                                    ...
+                                                        ]
+                                                    )
+                                                )
+                                            ])
+                                        )
+                                    );
+                                    isInserted = true;
                                 }
-
-                                ⬇︎
-
-                                BEM = [ 'BEEP' ]
-                            */
-
-                            if (t.isStringLiteral(path.node.source, { value: 'rebem' })) {
-                                BEMNames.push(
-                                    ...path.node.specifiers
-                                        .filter(spec => t.isIdentifier(spec.imported, { name: 'BEM' }))
-                                        .map(spec => spec.local.name)
+                                path.replaceWith(
+                                    t.callExpression(
+                                        t.identifier('checkBEM'),
+                                        path.node.arguments
+                                    )
                                 );
                             }
-                        },
-
-                        CallExpression(path) {
-                            /*
-                                <BEM block="test"></BEM>
-
-                                ⬇︎
-
-                                React.createElement(BEM, { block: "test" })
-
-                                ⬇︎
-
-                                {
-                                    type: 'CallExpression',
-                                    callee: {
-                                        type: 'MemberExpression',
-                                        object: { type: 'Identifier', name: 'React' },
-                                        property: { type: 'Identifier', name: 'createElement' },
-                                    },
-                                    arguments: [
-                                        { type: 'Identifier', name: 'BEM' },
-                                        { type: 'ObjectExpression', properties: ... }
-                                    ],
-                                    ...
-                                }
-
-                                ⬇︎
-
-                                * POOF! *
-
-                                ⬇︎
-
-                                BEM({ block: "test" })
-                            */
-
-                            BEMNames.forEach(function(BEMName) {
-                                // don't do anything if there is a scoped var with the same name
-                                if (!path.scope.hasOwnBinding(BEMName)) {
-                                    if (
-                                        t.isMemberExpression(path.node.callee) &&
-                                        t.isIdentifier(path.node.callee.object, { name: 'React' }) &&
-                                        t.isIdentifier(path.node.callee.property, { name: 'createElement' }) &&
-                                        t.isIdentifier(path.node.arguments[0], { name: BEMName })
-                                    ) {
-                                        path.replaceWith(
-                                            t.callExpression(
-                                                t.identifier(BEMName),
-                                                path.node.arguments.slice(1)
-                                            )
-                                        );
-                                    }
-                                }
-                            });
                         }
                     });
                 }

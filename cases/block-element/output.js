@@ -10,5 +10,5 @@ function Test() {
 
         return React.createElement.apply(React, arguments);
     }
-    return checkBEM(_rebem.BEM, { block: "test" });
+    return checkBEM(_rebem.BEM, { block: "test" }, checkBEM(_rebem.BEM, { block: "test", elem: "test2" }));
 }
