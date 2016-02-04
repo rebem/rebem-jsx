@@ -97,7 +97,7 @@ export default function({ types: t }) {
         visitor: {
             Program: {
                 exit(globalPath) {
-                    let isInserted = false;
+                    let isCheckBEMInserted = false;
 
                     globalPath.traverse({
                         CallExpression(path) {
@@ -106,12 +106,12 @@ export default function({ types: t }) {
                                 t.isIdentifier(path.node.callee.object, { name: 'React' }) &&
                                 t.isIdentifier(path.node.callee.property, { name: 'createElement' })
                             ) {
-                                if (!isInserted) {
+                                if (!isCheckBEMInserted) {
                                     const topPath = findTopPath(path, globalPath);
 
                                     topPath.insertBefore(getCheckBEM(t));
 
-                                    isInserted = true;
+                                    isCheckBEMInserted = true;
                                 }
                                 path.replaceWith(
                                     t.callExpression(
