@@ -10,10 +10,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function checkBEM(React, element) {
     if (element.__rebem) {
-        return element.apply(undefined, Array.prototype.slice.call(arguments, 2));
+        return element.apply(undefined, [].slice.call(arguments, 2));
     }
 
-    return React.createElement.apply(React, Array.prototype.slice.call(arguments, 1));
+    return React.createElement.apply(React, [].slice.call(arguments, 1));
 }
 function Test() {
     return checkBEM(_react2.default, _rebem.BEM, { block: 'test' });

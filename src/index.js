@@ -10,9 +10,9 @@ function findTopPath(path, globalPath) {
 /*
 function checkBEM(React, element) {
     if (element.__rebem) {
-        return element.apply(undefined, Array.prototype.slice.call(arguments, 2));
+        return element.apply(undefined, [].slice.call(arguments, 2));
     }
-    return React.createElement.apply(React, Array.prototype.slice.call(arguments, 1));
+    return React.createElement.apply(React, [].slice.call(arguments, 1));
 }
 */
 function getCheckBEM(t) {
@@ -40,10 +40,7 @@ function getCheckBEM(t) {
                                 t.callExpression(
                                     t.memberExpression(
                                         t.memberExpression(
-                                            t.memberExpression(
-                                                t.identifier('Array'),
-                                                t.identifier('prototype')
-                                            ),
+                                            t.arrayExpression([]),
                                             t.identifier('slice')
                                         ),
                                         t.identifier('call')
@@ -72,10 +69,7 @@ function getCheckBEM(t) {
                         t.callExpression(
                             t.memberExpression(
                                 t.memberExpression(
-                                    t.memberExpression(
-                                        t.identifier('Array'),
-                                        t.identifier('prototype')
-                                    ),
+                                    t.arrayExpression([]),
                                     t.identifier('slice')
                                 ),
                                 t.identifier('call')
