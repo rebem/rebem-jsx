@@ -4,6 +4,7 @@
     "rebem/configs/babel"
   ],
   "rules": {
-    "no-console": 0
+    "no-console": 0,
+    "id-length": 0
   }
 }
