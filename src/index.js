@@ -17,28 +17,14 @@ export default function({ types: t }) {
                                         t.functionExpression(
                                             t.identifier('checkBEM'),
                                             [
+                                                t.identifier('React'),
                                                 t.identifier('element')
                                             ],
                                             t.blockStatement([
                                                 t.ifStatement(
-                                                    t.logicalExpression(
-                                                        '||',
-                                                        t.binaryExpression(
-                                                            '===',
-                                                            t.memberExpression(
-                                                                t.identifier('element'),
-                                                                t.identifier('name')
-                                                            ),
-                                                            t.stringLiteral('BEM')
-                                                        ),
-                                                        t.binaryExpression(
-                                                            '===',
-                                                            t.memberExpression(
-                                                                t.identifier('element'),
-                                                                t.identifier('name')
-                                                            ),
-                                                            t.stringLiteral('blockFactory')
-                                                        )
+                                                    t.memberExpression(
+                                                        t.identifier('element'),
+                                                        t.identifier('__rebem')
                                                     ),
                                                     t.blockStatement([
                                                         t.returnStatement(
@@ -51,11 +37,18 @@ export default function({ types: t }) {
                                                                     t.identifier('undefined'),
                                                                     t.callExpression(
                                                                         t.memberExpression(
-                                                                            t.identifier('arguments'),
-                                                                            t.identifier('slice')
+                                                                            t.memberExpression(
+                                                                                t.memberExpression(
+                                                                                    t.identifier('Array'),
+                                                                                    t.identifier('prototype')
+                                                                                ),
+                                                                                t.identifier('slice')
+                                                                            ),
+                                                                            t.identifier('call')
                                                                         ),
                                                                         [
-                                                                            t.numericLiteral(1)
+                                                                            t.identifier('arguments'),
+                                                                            t.numericLiteral(2)
                                                                         ]
                                                                     )
                                                                 ]
@@ -74,8 +67,22 @@ export default function({ types: t }) {
                                                         ),
                                                         [
                                                             t.identifier('React'),
-                                                            t.identifier('arguments')
-
+                                                            t.callExpression(
+                                                                t.memberExpression(
+                                                                    t.memberExpression(
+                                                                        t.memberExpression(
+                                                                            t.identifier('Array'),
+                                                                            t.identifier('prototype')
+                                                                        ),
+                                                                        t.identifier('slice')
+                                                                    ),
+                                                                    t.identifier('call')
+                                                                ),
+                                                                [
+                                                                    t.identifier('arguments'),
+                                                                    t.numericLiteral(1)
+                                                                ]
+                                                            )
                                                         ]
                                                     )
                                                 )
@@ -87,7 +94,7 @@ export default function({ types: t }) {
                                 path.replaceWith(
                                     t.callExpression(
                                         t.identifier('checkBEM'),
-                                        path.node.arguments
+                                        [ t.identifier('React') ].concat(path.node.arguments)
                                     )
                                 );
                             }

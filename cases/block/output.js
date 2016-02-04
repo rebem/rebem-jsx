@@ -1,14 +1,20 @@
 "use strict";
 
-var _rebem = require("rebem");
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _rebem = require('rebem');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function Test() {
-    function checkBEM(element) {
-        if (element.name === "BEM" || element.name === "blockFactory") {
-            return element.apply(undefined, arguments.slice(1));
+    function checkBEM(React, element) {
+        if (element.__rebem) {
+            return element.apply(undefined, Array.prototype.slice.call(arguments, 2));
         }
 
-        return React.createElement.apply(React, arguments);
+        return React.createElement.apply(React, Array.prototype.slice.call(arguments, 1));
     }
-    return checkBEM(_rebem.BEM, { block: "test" });
+    return checkBEM(_react2.default, _rebem.BEM, { block: 'test' });
 }
