@@ -13,10 +13,18 @@ function normalizeLines(str) {
     return str.trimRight().replace(/\r\n/g, '\n');
 }
 
-function runTest(testPath) {
+function runTest(testPath, externalHelper) {
     const output = babel.transformFileSync(testPath + '/input.js', {
         presets: [ 'react' ],
-        plugins: [ 'transform-runtime', pluginPath ]
+        plugins: [
+            'transform-runtime',
+            [
+                pluginPath,
+                {
+                    externalHelper
+                }
+            ]
+        ]
     });
     const expected = fs.readFileSync(testPath + '/output.js', 'utf-8');
 
@@ -36,12 +44,25 @@ function runTest(testPath) {
 }
 
 function runTests() {
-    fs.readdirSync(__dirname)
-        .map(testPath => path.resolve(__dirname, testPath))
+    const inlineDirName = path.resolve(__dirname, 'inline');
+    const externalDirName = path.resolve(__dirname, 'external');
+
+    console.log('inline');
+    fs.readdirSync(inlineDirName)
+        .map(testPath => path.resolve(inlineDirName, testPath))
         .filter(testPath => fs.lstatSync(testPath).isDirectory())
         .forEach(testPath => {
             console.log(testPath);
             runTest(testPath);
+        });
+
+    console.log('external');
+    fs.readdirSync(externalDirName)
+        .map(testPath => path.resolve(externalDirName, testPath))
+        .filter(testPath => fs.lstatSync(testPath).isDirectory())
+        .forEach(testPath => {
+            console.log(testPath);
+            runTest(testPath, true);
         });
 }
 

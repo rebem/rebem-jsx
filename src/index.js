@@ -8,6 +8,21 @@ function findTopPath(path, globalPath) {
 }
 
 /*
+import { checkBEM } from 'babel-plugin-transform-rebem-jsx';
+*/
+function getCheckBEMExternal(t) {
+    return t.importDeclaration(
+        [
+            t.importSpecifier(
+                t.identifier('checkBEM'),
+                t.identifier('checkBEM')
+            )
+        ],
+        t.stringLiteral('babel-plugin-transform-rebem-jsx')
+    );
+}
+
+/*
 function checkBEM(React, element) {
     if (element.__rebem) {
         return element.apply(undefined, [].slice.call(arguments, 2));
@@ -15,7 +30,7 @@ function checkBEM(React, element) {
     return React.createElement.apply(React, [].slice.call(arguments, 1));
 }
 */
-function getCheckBEM(t) {
+function getCheckBEMInline(t) {
     return t.functionDeclaration(
         t.identifier('checkBEM'),
         [
@@ -90,7 +105,7 @@ export default function({ types: t }) {
     return {
         visitor: {
             Program: {
-                exit(globalPath) {
+                exit(globalPath, { opts }) {
                     let isCheckBEMInserted = false;
 
                     globalPath.traverse({
@@ -103,7 +118,11 @@ export default function({ types: t }) {
                                 if (!isCheckBEMInserted) {
                                     const topPath = findTopPath(path, globalPath);
 
-                                    topPath.insertBefore(getCheckBEM(t));
+                                    if (opts && opts.externalHelper) {
+                                        topPath.insertBefore(getCheckBEMExternal(t));
+                                    } else {
+                                        topPath.insertBefore(getCheckBEMInline(t));
+                                    }
 
                                     isCheckBEMInserted = true;
                                 }
@@ -121,3 +140,14 @@ export default function({ types: t }) {
         }
     };
 }
+
+// External helper to reduce bundle size
+// (available via `externalHelper: true` plugin options)
+/* eslint-disable */
+export function checkBEM(React, element) {
+    if (element.__rebem) {
+        return element.apply(undefined, [].slice.call(arguments, 2));
+    }
+    return React.createElement.apply(React, [].slice.call(arguments, 1));
+}
+/* eslint-enable */
