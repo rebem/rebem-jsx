@@ -1,5 +1,5 @@
 {
-  "name": "babel-plugin-rebem",
+  "name": "babel-plugin-transform-rebem-jsx",
   "version": "0.0.0",
   "description": "Babel plugin for reBEM jsx transformations",
   "repository": "mistadikay/babel-plugin-rebem",
