@@ -8,31 +8,46 @@ function findTopPath(path, globalPath) {
 }
 
 /*
-import { checkBEM } from 'babel-plugin-transform-rebem-jsx';
+TODO: investigate why ES6 module import (below) doesn't create variable [UID] declaration
+[UID] is a generated scopedIdentifier — to avoid names collision
+
+    var [UID] = require('babel-plugin-transform-rebem-jsx').checkBEM;
+
 */
-function getCheckBEMExternal(t) {
-    return t.importDeclaration(
+function checkBEMExternal(t, scopedIdentifier) {
+    return t.variableDeclaration(
+        'var',
         [
-            t.importSpecifier(
-                t.identifier('checkBEM'),
-                t.identifier('checkBEM')
+            t.variableDeclarator(
+                scopedIdentifier,
+                t.memberExpression(
+                    t.callExpression(
+                        t.identifier('require'),
+                        [
+                            t.stringLiteral('babel-plugin-transform-rebem-jsx')
+                        ]
+                    ),
+                    t.identifier('checkBEM')
+                )
             )
-        ],
-        t.stringLiteral('babel-plugin-transform-rebem-jsx')
+        ]
     );
 }
 
 /*
-function checkBEM(React, element) {
-    if (element.__rebem) {
-        return element.apply(undefined, [].slice.call(arguments, 2));
+[UID] is a generated scopedIdentifier — to avoid names collision
+
+    function [UID](React, element) {
+        if (element.__rebem) {
+            return element.apply(undefined, [].slice.call(arguments, 2));
+        }
+        return React.createElement.apply(React, [].slice.call(arguments, 1));
     }
-    return React.createElement.apply(React, [].slice.call(arguments, 1));
-}
+
 */
-function getCheckBEMInline(t) {
+function checkBEMInline(t, scopedIdentifier) {
     return t.functionDeclaration(
-        t.identifier('checkBEM'),
+        scopedIdentifier,
         [
             t.identifier('React'),
             t.identifier('element')
@@ -106,6 +121,7 @@ export default function({ types: t }) {
         visitor: {
             Program: {
                 exit(globalPath, { opts }) {
+                    const checkBEMIdentifier = globalPath.scope.generateUidIdentifier('checkBEM');
                     let isCheckBEMInserted = false;
 
                     globalPath.traverse({
@@ -119,16 +135,20 @@ export default function({ types: t }) {
                                     const topPath = findTopPath(path, globalPath);
 
                                     if (opts && opts.externalHelper) {
-                                        topPath.insertBefore(getCheckBEMExternal(t));
+                                        topPath.insertBefore(
+                                            checkBEMExternal(t, checkBEMIdentifier)
+                                        );
                                     } else {
-                                        topPath.insertBefore(getCheckBEMInline(t));
+                                        topPath.insertBefore(
+                                            checkBEMInline(t, checkBEMIdentifier)
+                                        );
                                     }
 
                                     isCheckBEMInserted = true;
                                 }
                                 path.replaceWith(
                                     t.callExpression(
-                                        t.identifier('checkBEM'),
+                                        checkBEMIdentifier,
                                         [ t.identifier('React') ].concat(path.node.arguments)
                                     )
                                 );

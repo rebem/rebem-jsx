@@ -2,8 +2,8 @@
 
 var _rebem = require("rebem");
 
-var _babelPluginTransformRebemJsx = require("babel-plugin-transform-rebem-jsx");
+var _checkBEM = require("babel-plugin-transform-rebem-jsx").checkBEM;
 
 function Test() {
-    return (0, _babelPluginTransformRebemJsx.checkBEM)(React, _rebem.BEM, { block: "test" }, (0, _babelPluginTransformRebemJsx.checkBEM)(React, _rebem.BEM, { block: "test", elem: "test2" }));
+    return _checkBEM(React, _rebem.BEM, { block: "test" }, _checkBEM(React, _rebem.BEM, { block: "test", elem: "test2" }));
 }
