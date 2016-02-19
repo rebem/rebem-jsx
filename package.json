@@ -34,9 +34,14 @@
 
     "lint": "eslint ./src/index.js",
     "tdd": "chokidar ./**/*.js -c 'npm test' --initial",
-    "test": "./node_modules/.bin/babel-node cases/test.js",
+    "test": "npm run lint",
+    "travis": "npm test",
 
     "precommit": "npm run lint"
+  },
+  "engines": {
+    "node": ">=0.12.0",
+    "npm": ">=2.7.0"
   },
   "license": "MIT"
 }
