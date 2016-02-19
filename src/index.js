@@ -134,13 +134,13 @@ export default function({ types: t }) {
                                 if (!isCheckBEMInserted) {
                                     const topPath = findTopPath(path, globalPath);
 
-                                    if (opts && opts.externalHelper) {
+                                    if (opts && opts.externalHelper === false) {
                                         topPath.insertBefore(
-                                            checkBEMExternal(t, checkBEMIdentifier)
+                                            checkBEMInline(t, checkBEMIdentifier)
                                         );
                                     } else {
                                         topPath.insertBefore(
-                                            checkBEMInline(t, checkBEMIdentifier)
+                                            checkBEMExternal(t, checkBEMIdentifier)
                                         );
                                     }
 
