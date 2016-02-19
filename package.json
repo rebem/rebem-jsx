@@ -1,10 +1,16 @@
 {
   "name": "babel-plugin-transform-rebem-jsx",
-  "version": "0.0.0",
-  "description": "Babel plugin for reBEM jsx transformations",
-  "repository": "mistadikay/babel-plugin-rebem",
-  "author": "",
+  "version": "0.1.0",
+  "description": "Babel plugin for reBEM JSX transformations",
+  "keywords": [ "rebem", "react", "bem", "jsx" ],
+  "homepage": "https://github.com/rebem/rebem-jsx",
+  "repository": "rebem/rebem-jsx",
+  "contributors": [
+    "Kir Belevich <kir@soulshine.in> (https://github.com/deepsweet)",
+    "Denis Koltsov <iam@mistadikay.com> (https://github.com/mistadikay)"
+  ],
   "main": "build/index.js",
+  "files": [ "build/" ],
   "dependencies": {
     "babel-cli": "6.4.x",
     "babel-core": "6.4.x",
@@ -37,7 +43,8 @@
     "test": "npm run lint",
     "travis": "npm test",
 
-    "precommit": "npm run lint"
+    "precommit": "npm run lint",
+    "prepublish": "npm run build"
   },
   "engines": {
     "node": ">=0.12.0",
