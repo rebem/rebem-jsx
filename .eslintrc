@@ -5,6 +5,7 @@
   ],
   "rules": {
     "no-console": 0,
-    "id-length": 0
+    "id-length": 0,
+    "no-sync": 0
   }
 }

@@ -1,3 +1,5 @@
 build/
 coverage/
 tmp/
+cases/external/
+cases/inline/

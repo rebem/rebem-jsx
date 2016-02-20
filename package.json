@@ -28,17 +28,17 @@
     "diff": "2.2.x",
     "watch": "0.17.x",
 
-    "eslint": "2.1.x",
+    "eslint": "2.2.x",
     "babel-eslint": "5.0.x",
     "eslint-plugin-babel": "3.1.x",
-    "eslint-config-rebem": ">1.0.0-alpha.1",
+    "eslint-config-rebem": ">=1.0.0-beta.1",
 
     "husky": "0.11.x"
   },
   "scripts": {
     "build": "babel lib/ -d build/",
 
-    "lint": "eslint ./src/index.js",
+    "lint": "eslint .",
     "tdd": "chokidar ./**/*.js -c 'npm test' --initial",
     "test": "npm run lint",
     "travis": "npm test",
