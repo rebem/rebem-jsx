@@ -40,8 +40,8 @@
 
     "lint": "eslint .",
     "tdd": "chokidar ./**/*.js -c 'npm test' --initial",
-    "test": "npm run lint",
-    "travis": "npm test",
+    "test": "./node_modules/.bin/babel-node cases/test.js",
+    "travis": "npm run lint",
 
     "precommit": "npm run lint",
     "prepublish": "npm run build"
