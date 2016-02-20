@@ -37,6 +37,9 @@ function runTest(testPath, externalHelper) {
                 value = chalk.red(part.value);
             }
             process.stdout.write(value);
+            if (part.added || part.removed) {
+                throw new Error('test failed');
+            }
         });
 
     console.log();
