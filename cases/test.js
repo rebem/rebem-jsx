@@ -17,7 +17,6 @@ function runTest(testPath, externalHelper) {
     const output = babel.transformFileSync(testPath + '/input.js', {
         presets: [ 'react' ],
         plugins: [
-            'transform-runtime',
             [
                 pluginPath,
                 {
