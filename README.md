@@ -15,54 +15,18 @@ $ npm i -S babel-plugin-transform-rebem-jsx
 ### `.babelrc`
 
 ```js
-// without options
 {
   "plugins": ["transform-rebem-jsx"]
-}
-// with options
-{
-  "plugins": [
-    ["transform-rebem-jsx", {
-      "externalHelper": false // default is true
-    }]
-  ]
 }
 ```
 
 ## Usage
 
-### BEM
-
 ```js
-import { BEM } from 'rebem';
-
-<BEM tag="span" />
-<BEM block="beep" />
-<BEM block="beep" elem="boop" />
-<BEM block="beep" mods={{ foo: 'bar' }} />
-<BEM block="beep" mix={{ block: 'boop' }} />
-```
-
-```html
-<span></span>
-<div class="beep"></div>
-<div class="beep__boop"></div>
-<div class="beep beep_foo_bar"></div>
-<div class="beep boop"></div>
-```
-
-### blockFactory
-
-```js
-import { blockFactory } from 'rebem';
-
-// since it's a custom element it should be capitalized
-const Block = blockFactory('beep');
-
-<Block />
-<Block elem="boop" />
-<Block mods={{ foo: 'bar' }} />
-<Block mix={{ block: 'boop' }} />
+<div block="beep"></div>
+<div block="beep" elem="boop"></div>
+<div block="beep" mods={{ foo: 'bar' }}></div>
+<div block="beep" mix={{ block: 'boop' }}></div>
 ```
 
 ```html
