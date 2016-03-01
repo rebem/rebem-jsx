@@ -4,7 +4,7 @@
 [![travis](http://img.shields.io/travis/rebem/rebem-jsx.svg?style=flat-square)](https://travis-ci.org/rebem/rebem-jsx)
 [![deps](http://img.shields.io/david/rebem/rebem-jsx.svg?style=flat-square)](https://david-dm.org/rebem/rebem-jsx)
 
-[Babel plugin](https://babeljs.io/docs/plugins/) allowing you to use JSX with [reBEM](https://github.com/rebem/rebem).
+[Babel plugin](https://babeljs.io/docs/plugins/) allowing you to use BEM props for composing classNames in JSX like in [reBEM](https://github.com/rebem/rebem).
 
 ## Install
 
