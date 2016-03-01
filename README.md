@@ -36,6 +36,22 @@ $ npm i -S babel-plugin-transform-rebem-jsx
 <div class="beep boop"></div>
 ```
 
+## Notes
+
+### Environment
+
+`process.env.NODE_ENV` must be available. For example in webpack you can do this with `DefinePlugin`:
+
+```js
+plugins: [
+    new webpack.DefinePlugin({
+        'process.env': {
+            NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+        }
+    })
+]
+```
+
 ### TODO
 - [x] docs
 - [ ] move tasks to start-runner
