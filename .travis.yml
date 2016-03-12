@@ -1,10 +1,8 @@
+# https://docs.travis-ci.com/user/customizing-the-build/
+
 sudo: false
 
 language: node_js
-
-# cache:
-#   directories:
-#     - node_modules
 
 node_js:
   - "5"
@@ -13,4 +11,11 @@ branches:
   only:
     - master
 
-script: npm run travis
+matrix:
+  fast_finish: true
+
+before_install:
+  - npm install -g npm
+  - npm --version
+
+script: npm start ci

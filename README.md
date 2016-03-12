@@ -55,4 +55,5 @@ plugins: [
 ### TODO
 - [x] docs
 - [x] move tasks to start-runner
-- [ ] actual tests
+- [x] actual tests
+- [ ] more tests
