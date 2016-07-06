@@ -27,6 +27,20 @@ describe('basic', function() {
             assert(typeof checkBEMProps === 'function');
         });
 
+        it('works with not defined props', function() {
+            const element = checkBEMProps(React, 'span');
+
+            assert(typeof element === 'object');
+            assert(element.type === 'span');
+        });
+
+        it('works with null props', function() {
+            const element = checkBEMProps(React, 'span', null);
+
+            assert(typeof element === 'object');
+            assert(element.type === 'span');
+        });
+
         it('creates element with correct props', function() {
             const element = checkBEMProps(React, 'div', {
                 tag: 'span',
