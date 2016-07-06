@@ -24,6 +24,8 @@
     "babel-preset-react": "6.11.x",
     "assert-diff": "1.0.x",
 
+    "react": ">=15.0.0-rc.1",
+
     "babel-eslint": "6.1.x",
     "eslint-plugin-babel": "3.3.x",
     "eslint-config-rebem": "1.1.x",

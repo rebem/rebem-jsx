@@ -1,6 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import assert from 'assert-diff';
+import React from 'react';
 import { default as plugin, checkBEMProps } from '../../lib';
 
 // babel-core supports only commonJS
@@ -21,8 +22,30 @@ describe('basic', function() {
         assert(typeof plugin === 'function');
     });
 
-    it('has checkBEMProps', function() {
-        assert(typeof checkBEMProps === 'function');
+    describe('checkBEMProps', function() {
+        it('is a function', function() {
+            assert(typeof checkBEMProps === 'function');
+        });
+
+        it('creates element with correct props', function() {
+            const element = checkBEMProps(React, 'div', {
+                tag: 'span',
+                block: 'block',
+                elem: 'elem',
+                mix: {
+                    block: 'block2'
+                },
+                mods: {
+                    empty: true
+                }
+            });
+
+            assert(typeof element.props.tag === 'undefined');
+            assert(typeof element.props.block === 'undefined');
+            assert(typeof element.props.elem === 'undefined');
+            assert(typeof element.props.mix === 'undefined');
+            assert(typeof element.props.mods === 'undefined');
+        });
     });
 });
 
