@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-transform-rebem-jsx",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Babel plugin for reBEM JSX transformations",
   "keywords": [ "rebem", "react", "bem", "jsx" ],
   "homepage": "https://github.com/rebem/rebem-jsx",
