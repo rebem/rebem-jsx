@@ -1,5 +1,6 @@
 # babel-plugin-transform-rebem-jsx
 
+[![maintenance](https://img.shields.io/badge/maintained-no-red.svg?style=flat-square)](http://unmaintained.tech)
 [![npm](https://img.shields.io/npm/v/babel-plugin-transform-rebem-jsx.svg?style=flat-square)](https://www.npmjs.com/package/babel-plugin-transform-rebem-jsx)
 [![travis](http://img.shields.io/travis/rebem/rebem-jsx.svg?style=flat-square)](https://travis-ci.org/rebem/rebem-jsx)
 [![deps](http://img.shields.io/david/rebem/rebem-jsx.svg?style=flat-square)](https://david-dm.org/rebem/rebem-jsx)
